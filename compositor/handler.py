@@ -39,7 +39,7 @@ def concat(event, context):
 
 def variate(event, context):
     for step in event["steps"]:
-        compose(step, {})
+        compose(step, event["config"])
 		
     return {
         'statusCode': 200,
@@ -48,12 +48,12 @@ def variate(event, context):
 	
 def compose(event, context):
     s3 = boto3.resource('s3') 
-    bucket = event["bucket"]
-    playlist = AudioSegment.from_file(event["inFolder"]+event["files"][0])	
+    bucket = context["bucket"]
+    playlist = AudioSegment.from_file(context["inFolder"]+event["files"][0])	
 	
     for file in event["files"]:
         try:
-            sound = AudioSegment.from_file(event["inFolder"]+file)	
+            sound = AudioSegment.from_file(context["inFolder"]+file)	
             playlist = playlist.overlay(sound)
 			
         except botocore.exceptions.ClientError as e:
@@ -63,8 +63,8 @@ def compose(event, context):
                raise
 
     index = secrets.randbits(10)
-    print("Saving mixed file to ", event["outFolder"] + event["outFile"] + str(index))			   
-    playlist.export(event["outFolder"] + event["outFile"] + str(index) + ".wav", format="wav")     
+    print("Saving mixed file to ", context["outFolder"] + context["outFile"] + str(index))			   
+    playlist.export(context["outFolder"] + context["outFile"] + str(index) + ".wav", format="wav")     
 	
     return {
         'statusCode': 200,
