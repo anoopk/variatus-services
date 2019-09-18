@@ -1,6 +1,7 @@
 import json
 import boto3
 import botocore
+import secrets
 from pydub import AudioSegment
 
 def upload(event, context):
@@ -35,9 +36,11 @@ def concat(event, context):
         'statusCode': 200,
         'body': json.dumps('Requested files mixed')
     }
-	
+
 def compose(event, context):
     s3 = boto3.resource('s3') 
+    event =  event["steps"][0]
+    upload(event, context)	
     bucket = event["bucket"]
     playlist = AudioSegment.from_file(event["inFolder"]+event["files"][0])	
 	
@@ -52,8 +55,9 @@ def compose(event, context):
             else:
                raise
 
-    print("Saving mixed file to ", event["outFolder"] + event["outFile"])			   
-    playlist.export(event["outFolder"] + event["outFile"], format="wav")     
+    index = secrets.randbits(10)
+    print("Saving mixed file to ", event["outFolder"] + event["outFile"] + str(index))			   
+    playlist.export(event["outFolder"] + event["outFile"] + str(index), format="wav")     
 	
     return {
         'statusCode': 200,
