@@ -3,6 +3,8 @@ import boto3
 import botocore
 import secrets
 from pydub import AudioSegment
+import os
+import glob
 
 def upload(event, context):
     s3 = boto3.client('s3')
@@ -37,7 +39,15 @@ def concat(event, context):
         'body': json.dumps('Requested files mixed')
     }
 
+def empty(context):
+    path = context["outFolder"]
+    files = glob.glob(path + "*")
+    for f in files:
+        os.remove(f)
+
 def variate(event, context):
+    empty(event["config"])	
+
     for step in event["steps"]:
         compose(step, event["config"])
 		
