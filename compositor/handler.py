@@ -37,10 +37,17 @@ def concat(event, context):
         'body': json.dumps('Requested files mixed')
     }
 
+def variate(event, context):
+    for step in event["steps"]:
+        compose(step, {})
+		
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Variation components ready')
+    }		
+	
 def compose(event, context):
     s3 = boto3.resource('s3') 
-    event =  event["steps"][0]
-    upload(event, context)	
     bucket = event["bucket"]
     playlist = AudioSegment.from_file(event["inFolder"]+event["files"][0])	
 	
@@ -57,7 +64,7 @@ def compose(event, context):
 
     index = secrets.randbits(10)
     print("Saving mixed file to ", event["outFolder"] + event["outFile"] + str(index))			   
-    playlist.export(event["outFolder"] + event["outFile"] + str(index), format="wav")     
+    playlist.export(event["outFolder"] + event["outFile"] + str(index) + ".wav", format="wav")     
 	
     return {
         'statusCode': 200,

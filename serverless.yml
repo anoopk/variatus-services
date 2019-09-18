@@ -55,6 +55,13 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
+  variate:
+    handler: compositor/handler.variate
+    events:
+      - http:
+          path: users/variate
+          method: get
+
   concat:
     handler: compositor/handler.concat
     events:
