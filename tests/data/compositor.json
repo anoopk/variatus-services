@@ -1,6 +1,7 @@
 {
     "config": {			
 		"project" : "BuffyFish Variations",
+		"barlength" : 5200,
 		"bucket" : "variatus-compositor-bucket",
 		"inFolder" : "C:\\Users\\admin\\Desktop\\Transitional\\Kinder\\kinder variations\\",
 		"outFolder" : "C:\\Users\\admin\\Desktop\\Transitional\\Kinder\\mixes\\",

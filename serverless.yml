@@ -55,6 +55,13 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
+  extract:
+    handler: compositor/handler.extract
+    events:
+      - http:
+          path: users/extract
+          method: get
+
   variate:
     handler: compositor/handler.variate
     events:

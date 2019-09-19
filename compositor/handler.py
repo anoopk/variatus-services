@@ -6,6 +6,12 @@ from pydub import AudioSegment
 import os
 import glob
 
+def extract(event, context):
+    sound = AudioSegment.from_file(event["config"]["inFolder"] + event["steps"][0]["files"][0])
+    test = sound[:event["config"]["barlength"]] * 4
+    test.export("test.wav", format="wav")     	
+    	
+
 def upload(event, context):
     s3 = boto3.client('s3')
     bucket = event["bucket"]	
