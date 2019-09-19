@@ -4,11 +4,14 @@
 		"bucket" : "variatus-compositor-bucket",
 		"inFolder" : "C:\\Users\\admin\\Desktop\\Transitional\\Kinder\\kinder variations\\",
 		"outFolder" : "C:\\Users\\admin\\Desktop\\Transitional\\Kinder\\mixes\\",
-		"outFile" : "mixed.wav"
+		"outFile"  : "mixed",
+		"outStream" : "C:\\Users\\admin\\Desktop\\Transitional\\Kinder\\mixed.wav"
+		
 	},
 	"steps": 
 	[
 		{
+			"reverse" : true,
 		    "speed" : 1,			
 			"files" : ["bass and sfx.wav", 
 					   "piano drum 2.wav", 

@@ -34,12 +34,12 @@ def concat(event, context):
             else:
                raise
 
-    print("Saving the final stream as ", path + config["outFile"])			   
-    stream.export(path + config["outFile"], format="wav")     	
+    print("Saving the final stream as ", config["outStream"])			   
+    stream.export(config["outStream"], format="wav")     	
 	
     return {
         'statusCode': 200,
-        'stream,': json.dumps(path + config["outFile"])
+        'stream,': config["outStream"]
     }
 
 def empty(context):
@@ -53,31 +53,44 @@ def variate(event, context):
 
     for step in event["steps"]:
         compose(step, event["config"])
-		
+    concat(event, context)
+     		
     return {
         'statusCode': 200,
         'body': json.dumps('Variation components ready')
     }		
 	
 def compose(event, context):
+    config = event["config"]
     s3 = boto3.resource('s3') 
-    bucket = context["bucket"]
-    playlist = AudioSegment.from_file(context["inFolder"]+event["files"][0])	
-	
-    for file in event["files"]:
-        try:
-            sound = AudioSegment.from_file(context["inFolder"]+file)	
-            playlist = playlist.overlay(sound)
-			
-        except botocore.exceptions.ClientError as e:
-            if e.response['Error']['Code'] == "404":
-                print(file, " does not exist in the bucket ", bucket)
-            else:
-               raise
+    bucket = config["bucket"]
 
-    index = secrets.randbits(10)
-    print("Saving mixed file to ", context["outFolder"] + context["outFile"] + str(index))			   
-    playlist.export(context["outFolder"] + context["outFile"] + str(index) + ".wav", format="wav")     
+    for step in event["steps"]:
+        files = step["files"]				
+        playlist = AudioSegment.from_file(config["inFolder"]+event["steps"][0]["files"][0])	# get rid of this
+        if "repeat" in step:
+            playlist *= step["repeat"]
+		
+        for file in files:	
+            try:
+                sound = AudioSegment.from_file(config["inFolder"]+file)	
+                if "repeat" in step:
+                    sound *= step["repeat"]
+                playlist = playlist.overlay(sound)
+			
+            except botocore.exceptions.ClientError as e:
+                if e.response['Error']['Code'] == "404":
+                    print(file, " does not exist in the bucket ", bucket)
+                else:
+                   raise
+
+        index = secrets.randbits(10)
+        print("Saving mixed file to ", config["outFolder"] + config["outFile"] + str(index))
+		
+        if "reverse" in step:		
+            playlist = playlist.reverse()
+			
+        playlist.export(config["outFolder"] + config["outFile"] + str(index) + ".wav", format="wav")     
 	
     return {
         'statusCode': 200,
