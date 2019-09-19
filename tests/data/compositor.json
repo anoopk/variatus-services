@@ -11,17 +11,42 @@
 	"steps": 
 	[
 		{
-			"reverse" : true,
+			"files" : ["bass and guitar var.wav"]
+		},
+		{
 		    "speed" : 1,			
 			"files" : ["bass and sfx.wav", 
+					   "bass and guitar var.wav", 
+					   "guitar 2 drum 2 bass.wav"]
+		},
+		{
+			"repeat" : 2,
+			"reverse" : true,
+		    "speed" : 1,			
+			"files" : ["piano drum 2.wav", 
+					   "guitar 2 drum 2 bass.wav"]
+		},
+		{
+		    "speed" : 1,			
+			"files" : ["guitar 2 sfx.wav"]
+		},	
+		{
+		    "repeat" : 3,
+		    "speed" : 1,			
+			"files" : ["guitar 2 sfx.wav", 
 					   "piano drum 2.wav", 
 					   "guitar 2 drum 2 bass.wav"]
 		},
 		{
-			"repeat" : 3,
+			"repeat" : 1,
 		    "speed" : 2,			
-			"files" : ["bass and sfx.wav", 
-					   "piano drum 2.wav", 
+			"files" : ["guitar 1 piano.wav"]
+		},
+		{
+			"repeat" : 4,
+		    "speed" : 2,			
+			"files" : ["guitar 1 piano.wav",
+						"piano drum 2.wav", 
 					   "guitar 2 drum 2 bass.wav"]
 		}
 	]

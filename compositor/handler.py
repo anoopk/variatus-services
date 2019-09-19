@@ -50,7 +50,6 @@ def empty(path):
 def variate(event, context):
     empty(event["config"]["outFolder"])	
     compose(event, {})
-    concat(event, {})
      		
     return {
         'statusCode': 200,
@@ -61,7 +60,9 @@ def compose(event, context):
     config = event["config"]
     s3 = boto3.resource('s3') 
     bucket = config["bucket"]
-
+    i = 0
+	
+    mixed = AudioSegment.empty()
     for step in event["steps"]:
         files = step["files"]				
         playlist = AudioSegment.from_file(config["inFolder"]+event["steps"][0]["files"][0])	# get rid of this
@@ -71,6 +72,7 @@ def compose(event, context):
         for file in files:	
             try:
                 sound = AudioSegment.from_file(config["inFolder"]+file)	
+                print("$$$$$$$$$$$$$ ",  sound.frame_rate)
                 if "repeat" in step:
                     sound *= step["repeat"]
                 playlist = playlist.overlay(sound)
@@ -82,13 +84,15 @@ def compose(event, context):
                    raise
 
         index = secrets.randbits(10)
-        print("Saving mixed file to ", config["outFolder"] + config["outFile"] + str(index))
+        print("Saving mixed file to ", config["outFolder"] + config["outFile"] + str(i))
 		
         if "reverse" in step:		
             playlist = playlist.reverse()
 			
-        playlist.export(config["outFolder"] + config["outFile"] + str(index) + ".wav", format="wav")     
-	
+        playlist.export(config["outFolder"] + config["outFile"] + str(i) + ".wav", format="wav")     
+        mixed += playlist
+        i += 1
+    mixed.export(config["outStream"], format="wav")     		
     return {
         'statusCode': 200,
         'body': json.dumps('Requested files mixed')
