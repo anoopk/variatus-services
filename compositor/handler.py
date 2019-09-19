@@ -42,18 +42,15 @@ def concat(event, context):
         'stream,': config["outStream"]
     }
 
-def empty(context):
-    path = context["outFolder"]
+def empty(path):
     files = glob.glob(path + "*")
     for f in files:
         os.remove(f)
 
 def variate(event, context):
-    empty(event["config"])	
-
-    for step in event["steps"]:
-        compose(step, event["config"])
-    concat(event, context)
+    empty(event["config"]["outFolder"])	
+    compose(event, {})
+    concat(event, {})
      		
     return {
         'statusCode': 200,
