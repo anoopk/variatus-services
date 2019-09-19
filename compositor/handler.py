@@ -18,12 +18,15 @@ def upload(event, context):
     }
 	
 def concat(event, context):	
-    stream = AudioSegment.from_file(event["inFolder"]+event["files"][0])	
-	
-    for file in event["files"]:
+    config = event["config"]
+    path = config["outFolder"]
+    files = glob.glob(path + "*")
+    stream = AudioSegment.empty()
+    for file in files:
         try:
-            sound = AudioSegment.from_file(event["inFolder"]+file)	
-            stream = stream + sound
+            print("Adding ", file)		
+            sound = AudioSegment.from_file(file)	
+            stream += sound
 			
         except botocore.exceptions.ClientError as e:
             if e.response['Error']['Code'] == "404":
@@ -31,12 +34,12 @@ def concat(event, context):
             else:
                raise
 
-    print("Saving stream to ", event["outFolder"] + event["outFile"])			   
-    stream.export(event["outFolder"] + event["outFile"], format="wav")     
+    print("Saving the final stream as ", path + config["outFile"])			   
+    stream.export(path + config["outFile"], format="wav")     	
 	
     return {
         'statusCode': 200,
-        'body': json.dumps('Requested files mixed')
+        'stream,': json.dumps(path + config["outFile"])
     }
 
 def empty(context):
