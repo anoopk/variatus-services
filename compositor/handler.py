@@ -8,7 +8,7 @@ import glob
 
 def extract(event, context):
     sound = AudioSegment.from_file(event["config"]["inFolder"] + event["steps"][0]["files"][0])
-    test = sound[:event["config"]["barlength"]] * 4
+    test = sound[:event["config"]["barlength"] * 1.5] * 4
     test.export("test.wav", format="wav")     	
     	
 
@@ -66,21 +66,21 @@ def compose(event, context):
     config = event["config"]
     s3 = boto3.resource('s3') 
     bucket = config["bucket"]
-    i = 0
-	
     mixed = AudioSegment.empty()
+	
     for step in event["steps"]:
-        files = step["files"]				
-        playlist = AudioSegment.from_file(config["inFolder"]+event["steps"][0]["files"][0])	# get rid of this
-        if "repeat" in step:
-            playlist *= step["repeat"]
-		
+        files = step["files"]			
+        playlist = AudioSegment.silent(step["bars"] * config["barlength"] * step["repeat"]) 					#from_file(config["inFolder"]+event["steps"][0]["files"][0])	# get rid of this		
         for file in files:	
             try:
                 sound = AudioSegment.from_file(config["inFolder"]+file)	
-                print("$$$$$$$$$$$$$ ",  sound.frame_rate)
+                if "bars" in step:
+                    sound = sound[:event["config"]["barlength"] * step["bars"]]
                 if "repeat" in step:
                     sound *= step["repeat"]
+                if "reverse" in step:		
+                    sound = sound.reverse()														
+					
                 playlist = playlist.overlay(sound)
 			
             except botocore.exceptions.ClientError as e:
@@ -90,14 +90,10 @@ def compose(event, context):
                    raise
 
         index = secrets.randbits(10)
-        print("Saving mixed file to ", config["outFolder"] + config["outFile"] + str(i))
-		
-        if "reverse" in step:		
-            playlist = playlist.reverse()
-			
-        playlist.export(config["outFolder"] + config["outFile"] + str(i) + ".wav", format="wav")     
+        print("Saving mixed file to ", config["outFolder"] + config["outFile"] + str(index))			
+        playlist.export(config["outFolder"] + config["outFile"] + str(index) + ".wav", format="wav")     		
         mixed += playlist
-        i += 1
+		
     mixed.export(config["outStream"], format="wav")     		
     return {
         'statusCode': 200,
