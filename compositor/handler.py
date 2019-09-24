@@ -63,6 +63,10 @@ def compose(event, context):
     mixed = AudioSegment.empty()
 	
     for step in event["steps"]:
+        if "reuse" in step:
+            print(">>>>>>>>>>>>>>>>>>  Resuing ", step["reuse"])		
+            step = event["steps"][step["reuse"]]
+			
         files = step["files"]			
         playlist = AudioSegment.silent(step["bars"] * config["barlength"] * step["repeat"])
         for file in files:	

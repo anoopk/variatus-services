@@ -53,6 +53,14 @@
 		    "repeat" : 2,
 			"fadein-end" : 1500,
 			"files" : [{"track" : "drums 2 bass and sfx.wav"}, {"track" : "guitar 2 piano.wav"}]
-		}				
+		},
+		{
+			"reuse" : 4, 		
+			"repeat" : 2
+		},						
+		{
+			"reuse" : 6, 		
+			"repeat" : 4
+		}								
 	]
 }
