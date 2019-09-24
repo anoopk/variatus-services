@@ -6,40 +6,53 @@
 		"inFolder" : "C:\\Users\\admin\\Desktop\\Transitional\\Kinder\\kinder variations\\",
 		"outFolder" : "C:\\Users\\admin\\Desktop\\Transitional\\Kinder\\mixes\\",
 		"outFile"  : "mixed",
-		"outStream" : "C:\\Users\\admin\\Desktop\\Transitional\\Kinder\\mixed.wav"
+		"outStream" : "mixed.wav"
 		
 	},
 	"steps": 
 	[
 		{
-		    "bars" : 1,
+			"index" : 0,
+		    "bars" : 0.75,
 		    "repeat" : 2,
-			"files" : ["drums 2 bass and sfx.wav"]
+			"files" : [{"track" : "drums 2 bass and sfx.wav", "reverse" : true}]
 		},
 		{
-		    "bars" : 2,
+			"index" : 1,
+		    "bars" : 0.75,
 		    "repeat" : 2,
-			"files" : ["drums 2 bass and sfx.wav"]
+			"files" : [{"track" : "drums 2 bass and sfx.wav"}, {"track" : "drums 2 bass and sfx.wav", "reverse" : true}]
+		}, 		
+		{
+			"index" : 2,		
+		    "bars" : 2.25,
+		    "repeat" : 2,
+			"files" : [{"track" : "drums 2 bass and sfx.wav"}]
 		}, 
 		{
+			"index" : 3,		
 		    "bars" : 1,
 		    "repeat" : 2,
-			"files" : ["drums 2 bass and sfx.wav"]
+			"files" : [{"track" : "drums 2 bass and sfx.wav"}]
 		},		
 		{
+			"index" : 4,		
 		    "bars" : 8,
 		    "repeat" : 1,
-			"files" : ["piano drum 2.wav", "drums 2 bass and sfx.wav"]
+			"files" : [{"track" : "piano drum 2.wav"}, {"track" : "drums 2 bass and sfx.wav", "repeat" : true}]
 		},		
 		{
+			"index" : 5,				
 		    "bars" : 2,
 		    "repeat" : 2,
-			"files" : ["drums 2 bass and sfx.wav"]
+			"files" : [{"track" : "drums 2 bass and sfx.wav"}]
 		},		
 		{
+			"index" : 6,		
 		    "bars" : 4,
 		    "repeat" : 2,
-			"files" : ["drums 2 bass and sfx.wav", "guitar 2 piano.wav"]
+			"fadein-end" : 1500,
+			"files" : [{"track" : "drums 2 bass and sfx.wav"}, {"track" : "guitar 2 piano.wav"}]
 		}				
 	]
 }

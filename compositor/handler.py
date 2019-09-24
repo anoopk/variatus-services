@@ -5,13 +5,7 @@ import secrets
 from pydub import AudioSegment
 import os
 import glob
-
-def extract(event, context):
-    sound = AudioSegment.from_file(event["config"]["inFolder"] + event["steps"][0]["files"][0])
-    test = sound[:event["config"]["barlength"] * 1.5] * 4
-    test.export("test.wav", format="wav")     	
-    	
-
+   	
 def upload(event, context):
     s3 = boto3.client('s3')
     bucket = event["bucket"]	
@@ -70,22 +64,24 @@ def compose(event, context):
 	
     for step in event["steps"]:
         files = step["files"]			
-        playlist = AudioSegment.silent(step["bars"] * config["barlength"] * step["repeat"]) 					#from_file(config["inFolder"]+event["steps"][0]["files"][0])	# get rid of this		
+        playlist = AudioSegment.silent(step["bars"] * config["barlength"] * step["repeat"])
         for file in files:	
             try:
-                sound = AudioSegment.from_file(config["inFolder"]+file)	
+                sound = AudioSegment.from_file(config["inFolder"]+file["track"])	
                 if "bars" in step:
                     sound = sound[:event["config"]["barlength"] * step["bars"]]
                 if "repeat" in step:
                     sound *= step["repeat"]
-                if "reverse" in step:		
-                    sound = sound.reverse()														
+                if "reverse" in file:		
+                    sound = sound.reverse()			
+                if "fadein-end"	in file:
+                    sound.append(end, crossfade=1500)
 					
                 playlist = playlist.overlay(sound)
 			
             except botocore.exceptions.ClientError as e:
                 if e.response['Error']['Code'] == "404":
-                    print(file, " does not exist in the bucket ", bucket)
+                    print(file.track, " does not exist in the bucket ", bucket)
                 else:
                    raise
 
