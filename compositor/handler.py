@@ -56,6 +56,13 @@ def variate(event, context):
         'body': json.dumps('Variation components ready')
     }		
 	
+def randomizeIfAsked(val):
+    if val < 0:
+        print(val)
+        val = secrets.randbelow(val * -1)
+        print(val)		
+    return val
+		
 def compose(event, context):
     config = event["config"]
     s3 = boto3.resource('s3') 
@@ -64,7 +71,6 @@ def compose(event, context):
 	
     for step in event["steps"]:
         if "reuse" in step:
-            print(">>>>>>>>>>>>>>>>>>  Resuing ", step["reuse"])		
             step = event["steps"][step["reuse"]]
 			
         files = step["files"]			
@@ -72,12 +78,12 @@ def compose(event, context):
         for file in files:	
             try:
                 sound = AudioSegment.from_file(config["inFolder"]+file["track"])	
-                if "bars" in step:
-                    sound = sound[:event["config"]["barlength"] * step["bars"]]
+                if "bars" in step:					
+                    sound = sound[:event["config"]["barlength"] * randomizeIfAsked(step["bars"])]
                 if "repeat" in step:
-                    sound *= step["repeat"]
+                    sound *=  randomizeIfAsked(step["repeat"])
                 if "reverse" in file:		
-                    sound = sound.reverse()			
+                    sound =  sound.reverse()
                 if "fadein-end"	in file:
                     sound.append(end, crossfade=1500)
 					

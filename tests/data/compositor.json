@@ -13,19 +13,19 @@
 	[
 		{
 			"index" : 0,
-		    "bars" : 0.75,
+		    "bars" : 0.25,
 		    "repeat" : 2,
 			"files" : [{"track" : "drums 2 bass and sfx.wav", "reverse" : true}]
 		},
 		{
 			"index" : 1,
-		    "bars" : 0.75,
-		    "repeat" : 2,
+		    "bars" : 0.25,
+		    "repeat" : -2,
 			"files" : [{"track" : "drums 2 bass and sfx.wav"}, {"track" : "drums 2 bass and sfx.wav", "reverse" : true}]
 		}, 		
 		{
 			"index" : 2,		
-		    "bars" : 2.25,
+		    "bars" : -2,
 		    "repeat" : 2,
 			"files" : [{"track" : "drums 2 bass and sfx.wav"}]
 		}, 
