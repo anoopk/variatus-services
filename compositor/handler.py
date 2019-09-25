@@ -59,7 +59,7 @@ def variate(event, context):
 def randomizeIfAsked(val):
     if val < 0:
         print(val)
-        val = secrets.randbelow(val * -1)
+        val = secrets.randbelow(val * -1) + 1
         print(val)		
     return val
 		
@@ -74,14 +74,15 @@ def compose(event, context):
             step = event["steps"][step["reuse"]]
 			
         files = step["files"]			
-        playlist = AudioSegment.silent(step["bars"] * config["barlength"] * step["repeat"])
+        playlist = AudioSegment.silent()
         for file in files:	
             try:
                 sound = AudioSegment.from_file(config["inFolder"]+file["track"])	
                 if "bars" in step:					
                     sound = sound[:event["config"]["barlength"] * randomizeIfAsked(step["bars"])]
                 if "repeat" in step:
-                    sound *=  randomizeIfAsked(step["repeat"])
+                    var = randomizeIfAsked(step["repeat"])
+                    sound *= var
                 if "reverse" in file:		
                     sound =  sound.reverse()
                 if "fadein-end"	in file:

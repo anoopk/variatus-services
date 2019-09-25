@@ -13,54 +13,9 @@
 	[
 		{
 			"index" : 0,
-		    "bars" : 0.25,
+		    "bars" : -5,
 		    "repeat" : 2,
 			"files" : [{"track" : "drums 2 bass and sfx.wav", "reverse" : true}]
-		},
-		{
-			"index" : 1,
-		    "bars" : 0.25,
-		    "repeat" : -2,
-			"files" : [{"track" : "drums 2 bass and sfx.wav"}, {"track" : "drums 2 bass and sfx.wav", "reverse" : true}]
-		}, 		
-		{
-			"index" : 2,		
-		    "bars" : -2,
-		    "repeat" : 2,
-			"files" : [{"track" : "drums 2 bass and sfx.wav"}]
-		}, 
-		{
-			"index" : 3,		
-		    "bars" : 1,
-		    "repeat" : 2,
-			"files" : [{"track" : "drums 2 bass and sfx.wav"}]
-		},		
-		{
-			"index" : 4,		
-		    "bars" : 8,
-		    "repeat" : 1,
-			"files" : [{"track" : "piano drum 2.wav"}, {"track" : "drums 2 bass and sfx.wav", "repeat" : true}]
-		},		
-		{
-			"index" : 5,				
-		    "bars" : 2,
-		    "repeat" : 2,
-			"files" : [{"track" : "drums 2 bass and sfx.wav"}]
-		},		
-		{
-			"index" : 6,		
-		    "bars" : 4,
-		    "repeat" : 2,
-			"fadein-end" : 1500,
-			"files" : [{"track" : "drums 2 bass and sfx.wav"}, {"track" : "guitar 2 piano.wav"}]
-		},
-		{
-			"reuse" : 4, 		
-			"repeat" : 2
-		},						
-		{
-			"reuse" : 6, 		
-			"repeat" : 4
-		}								
+		}
 	]
 }
